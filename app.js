@@ -31,10 +31,10 @@ function createReplyMessage(input) {
   var replyContent = "";
 
   if(input === "number guessing"){
-    answer = Math.ceil(Math.random()*quizSize);
+    answer = Math.ceil(Math.random() * quizSize);
     
     isGameActive = true;
-    replyContent = toString(answer) + "Number guessing game initialized: guess the number by saying one number from 1 to 7.";
+    replyContent = "Number guessing game initialized: guess the number by saying one number from 1 to 7.";
     return{
       type: "text",
       text: replyContent
