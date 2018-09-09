@@ -11,6 +11,8 @@ const lineClient = new line.Client(lineConfig);  //LINEサーバにリクエス�
 
 
 var isGameActive = false;
+var answer = 0;
+const quizSize = 7; 
 
 function checkAnswer(userGuess, ans){
   if (userGuess === ans){
@@ -27,8 +29,6 @@ function checkAnswer(userGuess, ans){
 function createReplyMessage(input) {
   const appUrl = process.env.HEROKU_APP_URL;
   var replyContent = "";
-  var answer = 0;
-  const quizSize = 7; 
 
   if(input === "number guessing"){
     answer = Math.ceil(Math.random()*quizSize);
