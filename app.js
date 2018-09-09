@@ -8,16 +8,76 @@ const lineConfig = {
 };
 const lineClient = new line.Client(lineConfig);  //LINEサーバにリクエストを投げるクライアントを生成
 
+function checkAnswer(userGuess, ans){
+  if (userGuess === ans){
+    return "ok";
+  }
+  else if(userGuess < ans){
+    return "low";
+  }
+  else{
+    return "high";
+  }
+}
+
 function createReplyMessage(input) {
-  // 2. オウム返しする
-  return {
-    type: "text",
-    // `（バッククォート）で囲った中で${変数名}や${式}を書くと結果が展開される
-    // テンプレートリテラル（Template literal）という文法です
-    text: "You said "+input+", loud and clear"
-    // 以下と同じです
-    // text: input + '、と言いましたね？'
-  };
+  const appUrl = process.env.HEROKU_APP_URL;
+  var replyContent = "";
+
+  if(input === "number guessing"){
+    var isGameActive = false;
+    var quizSize = 7; 
+    var answer = Math.ceil(quizSize*Math.random());
+    
+    isGameActive = true;
+    replyContent = "Number guessing game initialized: guess the number by saying one number from 1 to 7. You have "+toString(availableTries)+" tries remaining." ;
+    return{
+      type: "text",
+      text: replyContent
+    };
+  }else if(isGameActive === true && input === "quit"){
+    isGameActive = false;
+    replyContent = "Game canceled.";
+    return{
+      type: "text",
+      text: replyContent
+    };
+  }else if(isGameActive === true && 1 <= parseInt(input,10) <= 7){
+    if(checkAnswer(parseInt(input,10), answer)==="ok"){
+      isGameActive = false;
+      return {
+        type: "image",
+        previewImageUrl: `${appUrl}images/congratsPre.png`,
+        originalContentUrl: `${appUrl}images/congrats.png`
+      };
+    }else if(checkAnswer(parseInt(input,10), answer)==="low"){
+      replyContent = "Your guess is too low.";
+      return{
+        type: "text",
+        text: replyContent
+      };
+    }else{
+      replyContent = "Your guess is too high.";
+      return{
+        type: "text",
+        text: replyContent
+      };
+    }
+    
+  }else if(isGameActive === false){
+    replyContent = "You said " + input + ". I read you loud and clear. If you want to play number guessing, type 'number guessing'";
+    return{
+      type: "text",
+      text: replyContent
+    };
+  }else{
+    //isGameActiveがtrueなのに1-7とquit以外を答えた
+    replyContent = "Invalid answer. If you want to quit, just type 'quit'"
+    return{
+      type: "text",
+      text: replyContent
+    };
+  }
 }
 
 const server = express(); //expressインスタンス生成
