@@ -34,7 +34,7 @@ function createReplyMessage(input) {
     answer = Math.ceil(quizSize*Math.random());
     
     isGameActive = true;
-    replyContent = "Number guessing game initialized: guess the number by saying one number from 1 to 7.";
+    replyContent = toString(answer) + "Number guessing game initialized: guess the number by saying one number from 1 to 7.";
     return{
       type: "text",
       text: replyContent
