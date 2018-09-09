@@ -21,8 +21,11 @@ function checkAnswer(userGuess, ans){
   else if(userGuess < ans){
     return "low";
   }
-  else{
+  else if(userGuess > ans){
     return "high";
+  }
+  else{
+    return "invalid";
   }
 }
 
@@ -60,23 +63,21 @@ function createReplyMessage(input) {
         type: "text",
         text: replyContent
       };
-    }else{
+    }else if(checkAnswer(parseInt(input, 10), answer)==="high"){
       replyContent = input + ": Your guess is too high.";
       return{
         type: "text",
         text: replyContent
       };
-    }
-    
+    }else{
+      replyContent = input + ": Invalid answer. If you want to quit, just type 'quit'";
+      return{
+        type: "text",
+        text: replyContent
+      };
+    } 
   }else if(isGameActive === false){
     replyContent = "You said " + input + ". I read you loud and clear. If you want to play number guessing, type 'number guessing'";
-    return{
-      type: "text",
-      text: replyContent
-    };
-  }else{
-    //isGameActiveがtrueなのに1-7とquit以外を答えた
-    replyContent = "Invalid answer. If you want to quit, just type 'quit'"
     return{
       type: "text",
       text: replyContent
