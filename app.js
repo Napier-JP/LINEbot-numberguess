@@ -27,10 +27,11 @@ function checkAnswer(userGuess, ans){
 function createReplyMessage(input) {
   const appUrl = process.env.HEROKU_APP_URL;
   var replyContent = "";
+  var answer = 0;
   const quizSize = 7; 
 
   if(input === "number guessing"){
-    var answer = Math.ceil(quizSize*Math.random());
+    answer = Math.ceil(quizSize*Math.random());
     
     isGameActive = true;
     replyContent = "Number guessing game initialized: guess the number by saying one number from 1 to 7.";
