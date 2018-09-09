@@ -8,6 +8,8 @@ const lineConfig = {
 };
 const lineClient = new line.Client(lineConfig);  //LINEサーバにリクエストを投げるクライアントを生成
 
+var isGameActive = false;
+
 function checkAnswer(userGuess, ans){
   if (userGuess === ans){
     return "ok";
@@ -23,10 +25,9 @@ function checkAnswer(userGuess, ans){
 function createReplyMessage(input) {
   const appUrl = process.env.HEROKU_APP_URL;
   var replyContent = "";
+  var quizSize = 7; 
 
   if(input === "number guessing"){
-    var isGameActive = false;
-    var quizSize = 7; 
     var answer = Math.ceil(quizSize*Math.random());
     
     isGameActive = true;
