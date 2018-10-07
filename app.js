@@ -12,19 +12,19 @@ const lineClient = new line.Client(lineConfig);  //LINEサーバにリクエス�
 
 var isGameActive = false;
 var answer = 0;
-const quizSize = 7; 
+const quizSize = 7;
 
-function checkAnswer(userGuess, ans){
-  if (userGuess === ans){
+function checkAnswer(userGuess, ans) {
+  if (userGuess === ans) {
     return "ok";
   }
-  else if(userGuess < ans){
+  else if (userGuess < ans) {
     return "low";
   }
-  else if(userGuess > ans){
+  else if (userGuess > ans) {
     return "high";
   }
-  else{
+  else {
     return "invalid";
   }
 }
@@ -33,52 +33,52 @@ function createReplyMessage(input) {
   const appUrl = process.env.HEROKU_APP_URL;
   var replyContent = "";
 
-  if(input === "number guessing"){
+  if (input === "number guessing") {
     answer = Math.ceil(Math.random() * quizSize);
-    
+
     isGameActive = true;
     replyContent = "Number guessing game initialized: guess the number by saying one number from 1 to 7.";
-    return{
+    return {
       type: "text",
       text: replyContent
     };
-  }else if(isGameActive === true && input === "quit"){
+  } else if (isGameActive === true && input === "quit") {
     isGameActive = false;
     replyContent = "Game canceled.";
-    return{
+    return {
       type: "text",
       text: replyContent
     };
-  }else if(isGameActive === true && 1 <= parseInt(input,10) <= 7){
-    if(checkAnswer(parseInt(input,10), answer)==="ok"){
+  } else if (isGameActive === true && 1 <= parseInt(input, 10) <= quizSize) {
+    if (checkAnswer(parseInt(input, 10), answer) === "ok") {
       isGameActive = false;
       return {
         type: "image",
         previewImageUrl: `${appUrl}images/congratsPre.png`,
         originalContentUrl: `${appUrl}images/congrats.png`
       };
-    }else if(checkAnswer(parseInt(input,10), answer)==="low"){
+    } else if (checkAnswer(parseInt(input, 10), answer) === "low") {
       replyContent = input + ": Your guess is too low.";
-      return{
+      return {
         type: "text",
         text: replyContent
       };
-    }else if(checkAnswer(parseInt(input, 10), answer)==="high"){
+    } else if (checkAnswer(parseInt(input, 10), answer) === "high") {
       replyContent = input + ": Your guess is too high.";
-      return{
+      return {
         type: "text",
         text: replyContent
       };
-    }else{
+    } else {
       replyContent = input + ": Invalid answer. If you want to quit, just type 'quit'";
-      return{
+      return {
         type: "text",
         text: replyContent
       };
-    } 
-  }else if(isGameActive === false){
+    }
+  } else if (isGameActive === false) {
     replyContent = "You said " + input + ". I read you loud and clear. If you want to play number guessing, type 'number guessing'";
-    return{
+    return {
       type: "text",
       text: replyContent
     };
